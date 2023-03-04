@@ -1,18 +1,14 @@
+import json
 import flask
 import shared
 from flask_login import login_required, current_user, login_user, logout_user
 from authorization import driver, active
 
-@shared.web_application.route("/get-total-accounts", methods=["POST"])
+@shared.web_application.route("/get-total-accounts", methods=["GET"])
 def return_total_accounts():
-    post_data = flask.request.form
-    
-    js_key = post_data['js_key']
-    
     cursor = driver.MySQLInterface.GetCursor(driver._mysql)
+    users = driver.MySQLInterface.GetUsers(driver._mysql, None)
     
-    cursor.execute("select * from users")
+    result = {"timestamps": [n.timestamp for n in users]}
     
-    result = len(cursor.fetchall())
-    
-    return result
+    return json.dumps(result), 200

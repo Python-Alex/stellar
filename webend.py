@@ -33,8 +33,8 @@ def webhost_thread():
         raise threading.ThreadError("cannot execute in main thread")
 
     application.run(
-        host="0.0.0.0",
-        port=80
+        host="127.0.0.1",
+        port=8081
     )
 
 
@@ -61,5 +61,6 @@ if(__name__ == '__main__'):
     
     shared.web_application = application
 
-    import routes    
+    import routes
+    import storage_api    
     from authorization import driver

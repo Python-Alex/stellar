@@ -1,15 +1,41 @@
-/*--------------  coin_sales4 bar chart start ------------*/
+var registered_users = {
+    ctx: document.getElementById("coin_sales4").getContext('2d'),
+    chart: 0,
+    update_data: function (chart, idx) {
+        var current_reg_users = chart.data.datasets[0].data[idx];
+        current_reg_users++;
+        chart.data.datasets[0].data[idx] = current_reg_users;
+        chart.update();
+    },
+    get_account_data: async function () {
+        var response = await fetch("/get-total-accounts");
+        var data = await response.json();
+        return data.timestamps
+    },
+    get_day_idx: function (timestamp) {
+        var date = new Date(timestamp * 1000);
+        return date.getUTCDay() - 1;
+    }
+}
+
+async function update_registered_users_chart() {
+    var account_data = await registered_users.get_account_data();
+
+    for (var i = 0; i < account_data.length; i++) {
+        var idx = registered_users.get_day_idx(account_data[i]);
+        registered_users.update_data(registered_users.chart, idx);
+    }
+};
+update_registered_users_chart();
+
 if ($('#coin_sales4').length) {
-    var ctx = document.getElementById("coin_sales4").getContext('2d');
-    var chart = new Chart(ctx, {
-        // The type of chart we want to create
+    registered_users.chart = new Chart(registered_users.ctx, {
         type: 'bar',
-        // The data for our dataset
         data: {
-            labels: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"],
+            labels: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
             datasets: [{
-                label: "Sales",
-                data: [250, 320, 380, 330, 420, 250, 180, 250, 100, 300],
+                label: "Users",
+                data: [0, 0, 0, 0, 0, 0, 0],
                 backgroundColor: [
                     '#8416fe',
                     '#3a3afb',
@@ -24,7 +50,6 @@ if ($('#coin_sales4').length) {
                 ]
             }]
         },
-        // Configuration options go here
         options: {
             legend: {
                 display: false
@@ -61,7 +86,6 @@ if ($('#coin_sales4').length) {
     });
 }
 
-/*--------------  coin_sales4 bar chart End ------------*/
 
 /*--------------  coin_sales5 bar chart start ------------*/
 if ($('#coin_sales5').length) {
@@ -453,25 +477,25 @@ if ($('#ambarchart3').length) {
         },
         "trendLines": [],
         "graphs": [{
-                "balloonText": "Income:[[value]]",
-                "fillAlphas": 0.8,
-                "id": "AmGraph-1",
-                "lineAlpha": 0.2,
-                "title": "Income",
-                "type": "column",
-                "valueField": "income",
-                "fillColorsField": "color"
-            },
-            {
-                "balloonText": "Expenses:[[value]]",
-                "fillAlphas": 0.8,
-                "id": "AmGraph-2",
-                "lineAlpha": 0.2,
-                "title": "Expenses",
-                "type": "column",
-                "valueField": "expenses",
-                "fillColorsField": "color2"
-            }
+            "balloonText": "Income:[[value]]",
+            "fillAlphas": 0.8,
+            "id": "AmGraph-1",
+            "lineAlpha": 0.2,
+            "title": "Income",
+            "type": "column",
+            "valueField": "income",
+            "fillColorsField": "color"
+        },
+        {
+            "balloonText": "Expenses:[[value]]",
+            "fillAlphas": 0.8,
+            "id": "AmGraph-2",
+            "lineAlpha": 0.2,
+            "title": "Expenses",
+            "type": "column",
+            "valueField": "expenses",
+            "fillColorsField": "color2"
+        }
         ],
         "guides": [],
         "valueAxes": [{
@@ -483,40 +507,40 @@ if ($('#ambarchart3').length) {
         "balloon": {},
         "titles": [],
         "dataProvider": [{
-                "year": 2014,
-                "income": 23.5,
-                "expenses": 18.1,
-                "color": "#7474f0",
-                "color2": "#C5C5FD"
-            },
-            {
-                "year": 2015,
-                "income": 26.2,
-                "expenses": 22.8,
-                "color": "#7474f0",
-                "color2": "#C5C5FD"
-            },
-            {
-                "year": 2016,
-                "income": 30.1,
-                "expenses": 23.9,
-                "color": "#7474f0",
-                "color2": "#C5C5FD"
-            },
-            {
-                "year": 2017,
-                "income": 29.5,
-                "expenses": 25.1,
-                "color": "#7474f0",
-                "color2": "#C5C5FD"
-            },
-            {
-                "year": 2018,
-                "income": 24.6,
-                "expenses": 25,
-                "color": "#7474f0",
-                "color2": "#C5C5FD"
-            }
+            "year": 2014,
+            "income": 23.5,
+            "expenses": 18.1,
+            "color": "#7474f0",
+            "color2": "#C5C5FD"
+        },
+        {
+            "year": 2015,
+            "income": 26.2,
+            "expenses": 22.8,
+            "color": "#7474f0",
+            "color2": "#C5C5FD"
+        },
+        {
+            "year": 2016,
+            "income": 30.1,
+            "expenses": 23.9,
+            "color": "#7474f0",
+            "color2": "#C5C5FD"
+        },
+        {
+            "year": 2017,
+            "income": 29.5,
+            "expenses": 25.1,
+            "color": "#7474f0",
+            "color2": "#C5C5FD"
+        },
+        {
+            "year": 2018,
+            "income": 24.6,
+            "expenses": 25,
+            "color": "#7474f0",
+            "color2": "#C5C5FD"
+        }
         ],
         "export": {
             "enabled": false
@@ -791,19 +815,19 @@ if ($('#socialads').length) {
             }
         },
         series: [{
-                name: 'Closed',
-                data: [51, 48, 64, 48, 84]
-            }, {
-                name: 'Hold',
-                data: [83, 84, 53, 81, 88]
-            }, {
-                name: 'Pending',
-                data: [93, 84, 53, 53, 48]
-            },
-            {
-                name: 'Active',
-                data: [430, 312, 348, 254, 258]
-            }
+            name: 'Closed',
+            data: [51, 48, 64, 48, 84]
+        }, {
+            name: 'Hold',
+            data: [83, 84, 53, 81, 88]
+        }, {
+            name: 'Pending',
+            data: [93, 84, 53, 53, 48]
+        },
+        {
+            name: 'Active',
+            data: [430, 312, 348, 254, 258]
+        }
         ]
     });
 }
