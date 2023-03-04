@@ -13,6 +13,21 @@ if(os.name == 'posix'):
 
 AUTH_PATH = os.path.join(os.getcwd(), 'authorization')
     
+class ChatMessage(object):
+    
+    id : int
+    sender_id : int
+    sender_name : str
+    content : str
+    timestamp : int
+    
+    def __init__(self, id : int, sender_id : int, sender_name : str, content : str, timestamp : int):
+        self.id = id
+        self.sender_id = sender_id
+        self.sender_name = sender_name
+        self.content = content
+        self.timestamp = timestamp
+    
 class Notification(object):
     
     id : int
@@ -177,6 +192,25 @@ class MySQLInterface(object):
             ]
             
         return notifications
+
+    def GetChatMessages(self, expression : None | object)->list[ChatMessage]:
+        cursor = self.GetCursor()
+        
+        cursor.execute("select * from chatlounge")
+        
+        messages = [
+            ChatMessage(*result)
+            for result in cursor.fetchall()
+        ]
+        
+        if(expression):
+            messages = [
+                message
+                for message in messages
+                if(expression(message))
+            ]
+
+        return messages
 
 
 if(MySQLInterface.driver == None):

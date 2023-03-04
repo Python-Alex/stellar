@@ -32,7 +32,7 @@ if ($('#coin_sales4').length) {
     registered_users.chart = new Chart(registered_users.ctx, {
         type: 'bar',
         data: {
-            labels: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
             datasets: [{
                 label: "Users",
                 data: [0, 0, 0, 0, 0, 0, 0],
