@@ -141,6 +141,10 @@ def render_dashboard():
 
     return flask.render_template("index2.html")
 
+@shared.web_application.route("/chat", methods=["GET"])
+@login_required
+def render_chatlounge():
+    return flask.render_template("chatlounge.html")
 
 @shared.web_application.route("/profile", methods=["GET"])
 @login_required

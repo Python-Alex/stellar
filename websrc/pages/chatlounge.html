@@ -196,215 +196,131 @@
             </div>
             <!-- page title area end -->
             <div class="main-content-inner">
-                <!-- sales report area start -->
-                <div class="sales-report-area sales-style-two">
-                    <div class="row">
-                        <div class="col-xl-3 col-ml-3 col-md-6 mt-5">
-                            <div class="single-report">
-                                <div class="s-sale-inner pt--30 mb-3">
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Accounts Registered</h4>
-                                    </div>
-                                </div>
-                                <canvas id="coin_sales4" height="100"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-ml-3 col-md-6 mt-5">
-                            <div class="single-report">
-                                <div class="s-sale-inner pt--30 mb-3">
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0"></h4>
-                                    </div>
-                                </div>
-                                <canvas id="coin_sales5" height="100"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-ml-3 col-md-6  mt-5">
-                            <div class="single-report">
-                                <div class="s-sale-inner pt--30 mb-3">
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Subscriptions Active</h4>
-                                    </div>
-                                </div>
-                                <canvas id="coin_sales6" height="100"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-ml-3 col-md-6 mt-5">
-                            <div class="single-report">
-                                <div class="s-sale-inner pt--30 mb-3">
-                                    <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">New Coustomers</h4>
-                                    </div>
-                                </div>
-                                <canvas id="coin_sales7" height="100"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- visitor graph area end -->
-                <!-- order list area start -->
-                <div class="card mt-5">
-                    <div class="card-body">
-                        <h4 class="header-title">Requested Invitations</h4>
-                        <div class="table-responsive">
-                            <table class="dbkit-table">
-                                <tbody>
-                                    <tr class="heading-td">
-                                        <td>Username</td>
-                                        <td>Invited Date</td>
-                                        <td>Awaiting Confirmation</td>
-                                        <td>Discord ID</td>
-                                        <td>Steam Profile</td>
-                                        <td>Invited By</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ladis Sunglass</td>
-                                        <td>#894750374</td>
-                                        <td><span class="pending_dot">Pending</span></td>
-                                        <td>01976 74 92 00</td>
-                                        <td>9241</td>
-                                        <td>View Order</td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pagination_area pull-right mt-5">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- order list area end -->
                 <div class="row">
-                    <!-- product sold area start -->
-                    <div class="col-xl-8 col-lg-7 col-md-12 mt-5">
+                    <div class="col-lg-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Latest Subscriptions</h4>
-                                <div class="d-flex justify-content-between mb-4">
-                                    <h4 class="header-title mb-0"></h4>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="dbkit-table">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                    <table class="table table-bordered table-striped mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                        </thead>
                                         <tbody>
-                                            <tr class="heading-td">
-                                                <td>Username</td>
-                                                <td>Plan</td>
-                                                <td>Duration</td>
-                                                <td>Date</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Ladis Sunglass</td>
-                                                <td>$56</td>
-                                                <td>$160</td>
-                                                <td>$20</td>
-                                            </tr>
-                                            
+                                        <tr>
+                                            <th scope="row">Admin</th>
+                                            <td>Jake is gay</td>
+                                            <td>Tuesday, 5:26 AM</td>
+                                        </tr>
                                         </tbody>
+
                                     </table>
-                                </div>
-                                <div class="pagination_area pull-right mt-5">
-                                    <ul>
-                                        <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                    </ul>
-                                </div>
+                                    </div>
+                                    <form>
+                                    <div class="form-group">
+                                        <label for="inputTextMessage">Message</label>
+                                        <input type="text" class="form-control" id="inputTextMessage" name="content" aria-describedby="messageHelper" placeholder="Max Length : 256 Characters">
+                                        <small id="messageHelper" class="form-text text-muted">Abusive Messages are Punishable</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <!-- product sold area end -->
-                    <!-- team member area start -->
-                    <div class="col-xl-4 col-lg-5 col-md-12 mt-5">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-sm-flex flex-wrap justify-content-between mb-4 align-items-center">
-                                    <h4 class="header-title mb-0">Staff Team</h4>
-                                    <form class="team-search">
-                                        <input type="text" name="search" placeholder="Search Here">
-                                    </form>
-                                </div>
-                                <div class="member-box">
-                                    <div class="s-member">
-                                        <div class="media align-items-center">
-                                            <img src="../static/../static/images/team/sddefault.jpg" class="d-block ui-w-30 rounded-circle" alt="">
-                                            <div class="media-body ml-5">
-                                                <p>Driveby</p><span>Owner / Developer</span>
-                                            </div>
-                                            <div class="tm-social">
-                                                <a href="#"><i class="fa fa-phone"></i></a>
-                                                <a href="#"><i class="fa fa-envelope"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="s-member">
-                                        <div class="media align-items-center">
-                                            <img src="" class="d-block ui-w-30 rounded-circle" alt="">
-                                            <div class="media-body ml-5">
-                                                <p>N/a</p><span>Co-Developer</span>
-                                            </div>
-                                            <div class="tm-social">
-                                                <a href="#"><i class="fa fa-phone"></i></a>
-                                                <a href="#"><i class="fa fa-envelope"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="s-member">
-                                        <div class="media align-items-center">
-                                            <img src="" class="d-block ui-w-30 rounded-circle" alt="">
-                                            <div class="media-body ml-5">
-                                                <p>N/a</p><span>Support</span>
-                                            </div>
-                                            <div class="tm-social">
-                                                <a href="#"><i class="fa fa-phone"></i></a>
-                                                <a href="#"><i class="fa fa-envelope"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="s-member">
-                                        <div class="media align-items-center">
-                                            <img src="" class="d-block ui-w-30 rounded-circle" alt="">
-                                            <div class="media-body ml-5">
-                                                <p>N/a</p><span>Support</span>
-                                            </div>
-                                            <div class="tm-social">
-                                                <a href="#"><i class="fa fa-phone"></i></a>
-                                                <a href="#"><i class="fa fa-envelope"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="s-member">
-                                        <div class="media align-items-center">
-                                            <img src="" class="d-block ui-w-30 rounded-circle" alt="">
-                                            <div class="media-body ml-5">
-                                                <p>N/a</p><span>Support</span>
-                                            </div>
-                                            <div class="tm-social">
-                                                <a href="#"><i class="fa fa-phone"></i></a>
-                                                <a href="#"><i class="fa fa-envelope"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- team member area end -->
                 </div>
             </div>
         </div>
         <!-- main content area end -->
         <!-- footer area start-->
-
         <!-- footer area end-->
     </div>
     <!-- page container area end -->
     <!-- offset area start -->
-
+    <div class="offset-area">
+        <div class="offset-close"><i class="ti-close"></i></div>
+        <ul class="nav offset-menu-tab">
+            <li><a class="active" data-toggle="tab" href="#activity">Activity</a></li>
+            <li><a data-toggle="tab" href="#settings">Settings</a></li>
+        </ul>
+        <div class="offset-content tab-content">
+            <div id="activity" class="tab-pane fade in show active">
+                <div class="recent-activity">
+                    <div class="timeline-task">
+                        <div class="icon bg1">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <div class="tm-title">
+                            <h4>Rashed sent you an email</h4>
+                            <span class="time"><i class="ti-time"></i>09:35</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse distinctio itaque at.
+                        </p>
+                    </div>
+                    <div class="timeline-task">
+                        <div class="icon bg2">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <div class="tm-title">
+                            <h4>Added</h4>
+                            <span class="time"><i class="ti-time"></i>7 Minutes Ago</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur.
+                        </p>
+                    </div>
+                    <div class="timeline-task">
+                        <div class="icon bg2">
+                            <i class="fa fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="tm-title">
+                            <h4>You missed you Password!</h4>
+                            <span class="time"><i class="ti-time"></i>09:20 Am</span>
+                        </div>
+                    </div>
+                    <div class="timeline-task">
+                        <div class="icon bg3">
+                            <i class="fa fa-bomb"></i>
+                        </div>
+                        <div class="tm-title">
+                            <h4>Member waiting for you Attention</h4>
+                            <span class="time"><i class="ti-time"></i>09:35</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse distinctio itaque at.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="settings" class="tab-pane fade">
+                <div class="offset-settings">
+                    <h4>General Settings</h4>
+                    <div class="settings-list">
+                        <div class="s-settings">
+                            <div class="s-sw-title">
+                                <h5>Notifications</h5>
+                                <div class="s-swtich">
+                                    <input type="checkbox" id="switch1" />
+                                    <label for="switch1">Toggle</label>
+                                </div>
+                            </div>
+                            <p>Keep it 'On' When you want to get all the notification.</p>
+                        </div>
+                        <div class="s-settings">
+                            <div class="s-sw-title">
+                                <h5>Show recent activity</h5>
+                                <div class="s-swtich">
+                                    <input type="checkbox" id="switch2" />
+                                    <label for="switch2">Toggle</label>
+                                </div>
+                            </div>
+                            <p>The for attribute is necessary to bind our custom checkbox with the input.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- offset area end -->
     <!-- jquery latest version -->
     <script src="../static/js/vendor/jquery-2.2.4.min.js"></script>
@@ -423,13 +339,11 @@
     <!-- start zingchart js -->
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script>
-    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+        zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
     </script>
     <!-- all line chart activation -->
     <script src="../static/js/line-chart.js"></script>
-    <!-- all bar chart activation -->
-    <script src="../static/js/bar-chart.js"></script>
     <!-- all pie chart -->
     <script src="../static/js/pie-chart.js"></script>
     <!-- others plugins -->
