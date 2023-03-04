@@ -60,7 +60,7 @@ class Message(object):
         self.timestamp = timestamp
         
         self.marked_read = int(marked_read)
-        
+    
     
 class UserEntry(UserMixin):
     

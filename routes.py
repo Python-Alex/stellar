@@ -1,5 +1,8 @@
 #type: ignore
 
+
+import re
+import os
 import time
 import flask
 import shared
@@ -7,11 +10,21 @@ import base64
 import hashlib
 import string
 import random
+import shutil
 from datetime import timedelta
 from flask_login import login_required, current_user, login_user, logout_user
 
 from authorization import driver, active
 
+ 
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+def is_valid_email(email):
+ 
+    if(re.fullmatch(regex, email)):
+        return True
+ 
+    return False
+        
 def get_cookie_id(email: str)->str:
     return hashlib.md5(email.encode()).hexdigest()
 
@@ -106,6 +119,11 @@ def register_render():
             cursor.execute(f'INSERT INTO users VALUES (NULL, "{credential_form["username"]}", "{credential_form["email"]}", "{hash_password}", {int(time.time())}, 0, 0, "{salt}")')
             
             driver.MySQLInterface.driver.commit()
+            
+            cursor.execute("SELECT MAX(id) FROM users")
+            
+            shutil.copyfile(os.path.join(os.getcwd(), 'websrc', 'static', 'user_avatars', 'unset.png'), 
+                            os.path.join(os.getcwd(), 'websrc', 'static', 'user_avatars', '%d.png' % (cursor.fetchall()[0])))
 
         elif(credential_form['password'] != credential_form['password-repeat']):
             rstatus = 2
@@ -122,3 +140,40 @@ def render_dashboard():
     session = flask.session
 
     return flask.render_template("index2.html")
+
+
+@shared.web_application.route("/profile", methods=["GET"])
+@login_required
+def profile_render():
+    return flask.render_template("profile.html")
+
+@shared.web_application.route("/edit-profile", methods=["POST"])
+@login_required
+def profile_edit():
+    request = flask.request
+    form = request.form.to_dict()
+    
+    rstatus = -1
+    a_upload = 0
+    
+    if(request.files['avatar_image']):
+        request.files['avatar_image'].save(os.path.join(os.getcwd(), 'websrc', 'static', 'user_avatars', '%d.jpg' % (current_user.get_id())))
+        a_upload = 1
+    
+    if(len(form['set_username']) < 6):
+        rstatus = 1 # bad username length
+        
+    elif(not is_valid_email(form['set_email'])):
+        rstatus = 2 # invalid email
+        
+    elif( base64.b64encode(hashlib.md5(form['password'].encode()).hexdigest().encode() + current_user.salt.encode()).decode() != current_user.password):
+        rstatus = 3 # bad password
+        
+    else:
+        rstatus = 0
+        cursor = driver.MySQLInterface.GetCursor(driver._mysql)
+        cursor.execute('UPDATE users SET username="%s", email="%s" WHERE id=%d' % (form['set_username'], form['set_email'], current_user.get_id()))
+        
+        driver.MySQLInterface.driver.commit()
+    
+    return flask.render_template("profile.html", **{"status": rstatus, "uploaded": a_upload})

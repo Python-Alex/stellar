@@ -54,6 +54,8 @@
                                     <li><a href="/request"></a></li>
                                 </ul>
                             </li>
+                            <li><a href="/profile"><i class="ti-rocket"></i> <span>Profile</span></a></li>
+                            <li><a href="/notifications"><i class="ti-archive"></i> <span>Notifications</span></a></li>
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-folder"></i><span>Tools
                                     </span></a>
@@ -64,8 +66,8 @@
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-wallet"></i><span>Plans</span></a>
                                 <ul class="collapse">
-                                    <li><a href="barchart.html">Purchase</a></li>
-                                    <li><a href="linechart.html">View Active</a></li>
+                                    <li><a href="/purchase-plan">Purchase</a></li>
+                                    <li><a href="/active-subscriptions">View Active</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -75,68 +77,14 @@
                                     <li><a href="/contact-telegram">Telegram</a></li>
                                     <li><a href="/contact-email">Email</a></li>
                                     <li><a href="/tickets">Support</a></li>
-
                                 </ul>
                             </li>
-                            <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-slice"></i><span>icons</span></a>
-                                <ul class="collapse">
-                                    <li><a href="fontawesome.html">fontawesome icons</a></li>
-                                    <li><a href="themify.html">themify icons</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-table"></i>
-                                    <span>Tables</span></a>
-                                <ul class="collapse">
-                                    <li><a href="table-basic.html">basic table</a></li>
-                                    <li><a href="table-layout.html">table layout</a></li>
-                                    <li><a href="datatable.html">datatable</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="maps.html"><i class="ti-map-alt"></i> <span>maps</span></a></li>
-                            <li><a href="invoice.html"><i class="ti-receipt"></i> <span>Invoice Summary</span></a></li>
-                            <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-layers-alt"></i> <span>Pages</span></a>
-                                <ul class="collapse">
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="login2.html">Login 2</a></li>
-                                    <li><a href="login3.html">Login 3</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="register2.html">Register 2</a></li>
-                                    <li><a href="register3.html">Register 3</a></li>
-                                    <li><a href="register4.html">Register 4</a></li>
-                                    <li><a href="screenlock.html">Lock Screen</a></li>
-                                    <li><a href="screenlock2.html">Lock Screen 2</a></li>
-                                    <li><a href="reset-pass.html">reset password</a></li>
-                                    <li><a href="pricing.html">Pricing</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-exclamation-triangle"></i>
-                                    <span>Error</span></a>
-                                <ul class="collapse">
-                                    <li><a href="404.html">Error 404</a></li>
-                                    <li><a href="403.html">Error 403</a></li>
-                                    <li><a href="500.html">Error 500</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i> <span>Multi
-                                        level menu</span></a>
-                                <ul class="collapse">
-                                    <li><a href="#">Item level (1)</a></li>
-                                    <li><a href="#">Item level (1)</a></li>
-                                    <li><a href="#" aria-expanded="true">Item level (1)</a>
-                                        <ul class="collapse">
-                                            <li><a href="#">Item level (2)</a></li>
-                                            <li><a href="#">Item level (2)</a></li>
-                                            <li><a href="#">Item level (2)</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Item level (1)</a></li>
-                                </ul>
-                            </li>
+                            {% if current_user.permission > 50 %}
+                                <li><a href="/ticket-manager"><i class="ti-layout-cta-center"></i> <span>Support Tickets</span></a></li>
+                            {% endif %}
+                            {% if current_user.permission > 80 %}
+                                <li><a href="/cp"><i class="ti-panel"></i> <span>Control Panel</span></a></li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
@@ -229,11 +177,11 @@
                     </div>
                     <div class="col-sm-6 clearfix">
                         <div class="user-profile pull-right">
-                            <img class="avatar user-thumb" src="../static/images/author/avatar.png" alt="avatar">
+                            <img class="avatar user-thumb" src="../static/user_avatars/{{current_user.get_id() }}.png" alt="avatar">
                             <h4 class="user-name dropdown-toggle" data-toggle="dropdown">{{ current_user.name }} <i class="fa fa-angle-down"></i></h4>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="/direct-messages">Message</a>
-                                <a class="dropdown-item" href="/profile">Settings</a>
+                                <a class="dropdown-item" href="/profile">Profile</a>
                                 <a class="dropdown-item" href="/logout">Log Out</a>
                             </div>
                         </div>
@@ -249,42 +197,44 @@
                             <div class="single-report">
                                 <div class="s-sale-inner pt--30 mb-3">
                                     <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Product Sold: {{ products_sold }}</h4>
+                                        <h4 class="header-title mb-0">Product Sold</h4>
                                     </div>
                                 </div>
+                                <canvas id="coin_sales4" height="100"></canvas>
                             </div>
                         </div>
                         <div class="col-xl-3 col-ml-3 col-md-6 mt-5">
                             <div class="single-report">
                                 <div class="s-sale-inner pt--30 mb-3">
                                     <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Gross Profit: {{ gross_profit }}</h4>
+                                        <h4 class="header-title mb-0">Gross Profit</h4>
                                     </div>
                                 </div>
+                                <canvas id="coin_sales5" height="100"></canvas>
                             </div>
                         </div>
                         <div class="col-xl-3 col-ml-3 col-md-6  mt-5">
                             <div class="single-report">
                                 <div class="s-sale-inner pt--30 mb-3">
                                     <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Orders: {{ total_orders }}</h4>
+                                        <h4 class="header-title mb-0">Orders</h4>
                                     </div>
                                 </div>
+                                <canvas id="coin_sales6" height="100"></canvas>
                             </div>
                         </div>
                         <div class="col-xl-3 col-ml-3 col-md-6 mt-5">
                             <div class="single-report">
                                 <div class="s-sale-inner pt--30 mb-3">
                                     <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">New Coustomers: {{ new_customers }}</h4>    
+                                        <h4 class="header-title mb-0">New Coustomers</h4>
                                     </div>
-                                    
                                 </div>
+                                <canvas id="coin_sales7" height="100"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- visitor graph area end -->
                 <!-- order list area start -->
                 <div class="card mt-5">
