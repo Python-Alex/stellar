@@ -1,6 +1,5 @@
 var registered_users = {
     ctx: document.getElementById("coin_sales4").getContext('2d'),
-    day_offset: 1,
     chart: null,
     init: function () {
         this.chart = new Chart(this.ctx, {
