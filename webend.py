@@ -6,7 +6,7 @@ import string
 import random
 import logging
 import threading
-from datetime import timedelta
+import datetime
 from authorization import active, driver
 from flask_login import LoginManager
 
@@ -20,13 +20,15 @@ application = flask.Flask(
     template_folder=os.path.join(web_source_path, 'pages'), 
     static_folder=os.path.join(web_source_path, 'static')
 )
-application.secret_key = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(32))
+application.secret_key = "123123123" #"".join(random.choice(string.ascii_letters + string.digits) for _ in range(32))
 print("SECRET KEY", application.secret_key)
 
 login_manager = LoginManager()
 login_manager.init_app(application)
 
-application.permanent_session_lifetime = timedelta(minutes=60)
+application.jinja_env.globals.update(datetime=datetime, time=time)
+
+application.permanent_session_lifetime = datetime.timedelta(minutes=60)
 
 def webhost_thread():
     if(threading.current_thread().name == "MainThread"):
@@ -55,6 +57,7 @@ def load_user(user_id):
 
 # avoid starting thread from other file imports
 if(__name__ == '__main__'):
+    threading.Thread(target=driver.keep_alive).start()
     threading.Thread(target=webhost_thread).start()
 
     import shared
@@ -62,5 +65,6 @@ if(__name__ == '__main__'):
     shared.web_application = application
 
     import routes
-    import storage_api    
+    import storage_api
+    import action_api
     from authorization import driver

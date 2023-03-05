@@ -13,6 +13,26 @@ if(os.name == 'posix'):
 
 AUTH_PATH = os.path.join(os.getcwd(), 'authorization')
     
+class SupportTicket(object):
+    
+    id : int
+    sender_id : int
+    sender_name : str
+    header : str
+    initial_body : str
+    responses : str
+    priority : int
+    timestamp : int
+    
+    def __init__(self, id: int, sender_id : int, sender_name : str, header : str, initial_body : str, responses : str, priority: int, timestamp : int):
+        self.id = id
+        self.sender_id = sender_id
+        self.sender_name = sender_name  
+        self.header = header
+        self.initial_body = initial_body
+        self.responses = responses
+        self.timestamp = timestamp
+    
 class ChatMessage(object):
     
     id : int
@@ -212,6 +232,34 @@ class MySQLInterface(object):
 
         return messages
 
+    def GetSupportTickets(self, expression : None | object)->list[SupportTicket]:
+        cursor = self.GetCursor()
+        
+        cursor.execute("select * from tickets")
+        
+        tickets = [
+            SupportTicket(*result)
+            for result in cursor.fetchall()
+        ]
+        
+        if(expression):
+            tickets = [
+                ticket
+                for ticket in tickets
+                if(expression(ticket))
+            ]
+
+        return tickets
+
+
+def keep_alive():
+    """ keeps mysql connection alive """
+    while(True):
+        cursor = _mysql.GetCursor()
+        
+        cursor.execute("show tables")
+        
+        time.sleep(1200)
 
 if(MySQLInterface.driver == None):
     _mysql = MySQLInterface(**json.loads(open(os.path.join(AUTH_PATH, 'configuration.json'), 'r').read()))

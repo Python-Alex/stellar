@@ -136,9 +136,6 @@ def register_render():
 @shared.web_application.route("/dashboard", methods=["GET"])
 @login_required
 def render_dashboard():
-    request = flask.request
-    session = flask.session
-
     return flask.render_template("index2.html")
 
 @shared.web_application.route("/chat", methods=["GET"])
@@ -158,6 +155,16 @@ def controlpanel_render():
         return flask.render_template("index2.html")
     
     return flask.render_template("controlpanel.html")
+
+@shared.web_application.route("/tickets")
+@login_required
+def tickets_render():
+    tickets = driver.MySQLInterface.GetSupportTickets(driver._mysql,
+            lambda ticket: ticket.sender_id == current_user.get_id())
+    
+    print(tickets)
+    
+    return flask.render_template("supporttickets.html", **{"tickets": tickets})
 
 @shared.web_application.route("/edit-profile", methods=["POST"])
 @login_required
@@ -185,6 +192,7 @@ def profile_edit():
         rstatus = 0
         cursor = driver.MySQLInterface.GetCursor(driver._mysql)
         cursor.execute('UPDATE users SET username="%s", email="%s" WHERE id=%d' % (form['set_username'], form['set_email'], current_user.get_id()))
+    
         
         driver.MySQLInterface.driver.commit()
     
