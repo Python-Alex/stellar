@@ -2,20 +2,6 @@
 var chat_lounge = {
     message: document.getElementById("inputTextMessage"),
     user_id: document.getElementById("user-id"),
-    send_message: function () {
-        var data = {
-            uid: Number(this.user_id.innerText),
-            message: this.message.value
-        };
-
-        if (data.message.length == 0)
-            return;
-
-        fetch("/send-chat-message", {
-            method: "POST",
-            body: JSON.stringify({ "userid": data.uid, "content": data.message }),
-        });
-    },
     get_hour_12: function (hour) {
         return Math.floor(hour % 12);
     },
@@ -29,7 +15,7 @@ var chat_lounge = {
         return days[date.getUTCDay()] + ", " + this.get_hour_12(date.getHours()) + ":" + date.getMinutes() + " " + this.get_period(date.getHours());
     },
     insert_data: function (user_name, message, time_stamp) {
-        var date = this.get_date(time_stamp);
+        var date = this.get_date(time_stamp * 1000);
         var the_chats = document.getElementById("the-chats");
 
         var elements = {
@@ -52,20 +38,29 @@ var chat_lounge = {
         the_chats.appendChild(elements.chat);
         the_chats.appendChild(elements.date);
     },
-    update: function () {
-        var test_chat = {
-            user_name: "jakespenda",
-            message: "penis",
-            time_stamp: Date.now()
-        }
-        var chats = [];
-        chats.push(test_chat);
+    update: async function () {
+        var response = await fetch("/get-chat-messages");
+        var data = await response.json();
 
-        for (var c = 0; c < chats.length; c++) {
-            var current_chat = chats[c];
-
-            this.insert_data(current_chat.user_name, current_chat.message, current_chat.time_stamp);
+        for (var c = 0; c < data.messages.length; c++) {
+            this.insert_data(data.messages[c].username, data.messages[c].content, data.messages[c].timestamp);
         }
+    },
+    send_message: function () {
+        var data = {
+            uid: Number(this.user_id.innerText),
+            message: this.message.value
+        };
+
+        if (data.message.length == 0 || data.message.length > 256)
+            return;
+
+        fetch("/send-chat-message", {
+            method: "POST",
+            body: JSON.stringify({ "userid": data.uid, "content": data.message }),
+        });
+
+        //this.update();
     }
 };
 

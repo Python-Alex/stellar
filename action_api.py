@@ -48,8 +48,8 @@ def send_ticket_request():
 @shared.web_application.route("/send-chat-message", methods=["POST"])
 @login_required
 def send_chat_message():
-    form = flask.request.form.to_dict()
-    
+    form = json.loads(flask.request.data.decode())
+    print(form)
     userid = form['userid']
     message = form['content']
     
