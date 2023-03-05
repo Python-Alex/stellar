@@ -151,6 +151,14 @@ def render_chatlounge():
 def profile_render():
     return flask.render_template("profile.html")
 
+@shared.web_application.route("/cp", methods=["GET"])
+@login_required
+def controlpanel_render():
+    if(current_user.permission < 80):
+        return flask.render_template("index2.html")
+    
+    return flask.render_template("controlpanel.html")
+
 @shared.web_application.route("/edit-profile", methods=["POST"])
 @login_required
 def profile_edit():

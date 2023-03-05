@@ -2,17 +2,11 @@
 <html class="no-js" lang="en">
 
 <head>
-    <meta property="og:title" content="Stellar Services">
-    <meta property="og:image" content="https://cdn.discordapp.com/attachments/1081261203680137267/1081307889098051635/Stellar_Original_size_text_included_.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:locale" content="en-US">
-    <meta property="og:site_name" content="Stellar">
-    <meta property="og:type" content="website">
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Stellar - {{ current_user.name }}</title>
+    <title>srtdash - Starter Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="../static/images/icon/stellar_1.png">
+    <link rel="shortcut icon" type="image/png" href="../static/images/icon/favicon.ico">
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/css/themify-icons.css">
@@ -174,16 +168,16 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Profile</h4>
+                            <h4 class="page-title pull-left">Dashboard</h4>
                             <ul class="breadcrumbs pull-left">
-                                <li><a href="/dashboard">Home</a></li>
-                                <li><span>Profile</span></li>
+                                <li><a href="index.html">Home</a></li>
+                                <li><span>Dashboard</span></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-6 clearfix">
                         <div class="user-profile pull-right">
-                            <img class="avatar user-thumb" src="../static/user_avatars/{{current_user.get_id()}}.png" alt="avatar">
+                            <img class="avatar user-thumb" src="../static/user_avatars/{{current_user.get_id() }}.png" alt="avatar">
                             <h4 class="user-name dropdown-toggle" data-toggle="dropdown">{{ current_user.name }} <i class="fa fa-angle-down"></i></h4>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="/direct-messages">Message</a>
@@ -194,93 +188,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-8 mt-5 mx-auto">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="media mb-5">
-                                <img class="img-fluid mr-4" src="../static/user_avatars/{{current_user.get_id()}}.png" alt="image">
-                                <div class="media-body">
-                                    <h4 class="mb-3">{{ current_user.name }}</h4> Registered Timestamp {{ current_user.timestamp }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-8 mx-auto">
-                <div class="card mt-4">
-                    {% if status == 0 %}
-                        <div class="alert alert-success" role="alert">
-                            <strong>Success</strong> Account Details Edited
-                        </div>
-                        <meta http-equiv="refresh" content="2; url=/profile" />
-                    {% endif %}
-                    {% if status == 1 %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Failed</strong> Username must be 6 characters or more
-                        </div>
-                    {% endif %}
-                    {% if status == 2 %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Failed</strong> Invalid Email
-                        </div>
-                    {% endif %}
-                    {% if status == 3 %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Failed</strong> Incorrect Password
-                        </div>
-                    {% endif %}
-                    {% if uploaded == 1 %}
-                        <div class="alert alert-success" role="alert">
-                            <strong>Success</strong> Profile Picture Updated
-                        </div>
-                        <meta http-equiv="refresh" content="2; url=/profile" />
-                    {% endif %}
-                    <div class="card-body">
-                        <h4 class="header-title">Edit Details</h4>
-                        <form class="needs-validation" novalidate="" enctype = "multipart/form-data" action="/edit-profile" method="POST">
-                            <div class="form-row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="validationCustomUsername">Username</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                        </div>
-                                        <input type="text" class="form-control" id="validationCustom01" placeholder="" name="set_username" value="{{ current_user.name }}" required="">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="validationCustom01">Email</label>
-                                    <input type="text" class="form-control" id="validationCustom01" placeholder="" name="set_email" value="{{ current_user.email }}">
-
-                                </div>
-
-
-                            </div>
-                            <div class="form-row">
-                                <div class="col-md-12 mb-3">
-                                    <label for="validationCustom03">Password</label>
-                                    <input type="password" class="form-control" id="validationCustom03" name="password" value="" placeholder="">
-
-                                </div>
-                            </div>
-
-                            <label for="formFileLg" class="form-label">Input Profile Picture</label>
-                            <input class="form-control form-control-lg" name="avatar_image" id="formFileLg" type="file" />
-
-                            <button class="btn btn-primary" type="submit">Submit Change Request</button>
-                        </form>
-                    </div>
-                </div>
+            <!-- page title area end -->
+            <div class="main-content-inner">
+                <!-- MAIN CONTENT GOES HERE -->
+                
             </div>
         </div>
     </div>
 
-    <!-- offset area end -->
-    <!-- jquery latest version -->
     <script src="../static/js/vendor/jquery-2.2.4.min.js"></script>
     <!-- bootstrap 4 js -->
     <script src="../static/js/popper.min.js"></script>
