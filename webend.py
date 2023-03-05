@@ -26,7 +26,7 @@ print("SECRET KEY", application.secret_key)
 login_manager = LoginManager()
 login_manager.init_app(application)
 
-application.permanent_session_lifetime = timedelta(minutes=10)
+application.permanent_session_lifetime = timedelta(minutes=60)
 
 def webhost_thread():
     if(threading.current_thread().name == "MainThread"):

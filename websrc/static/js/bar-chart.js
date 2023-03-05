@@ -1,11 +1,27 @@
 var registered_users = {
     ctx: document.getElementById("coin_sales4").getContext('2d'),
-    chart: 0,
-    update_data: function (chart, idx) {
-        var current_reg_users = chart.data.datasets[0].data[idx];
-        current_reg_users++;
-        chart.data.datasets[0].data[idx] = current_reg_users;
-        chart.update();
+    day_offset: 1,
+    chart: null,
+    init: function () {
+        this.chart = new Chart(this.ctx, {
+            type: "bar",
+            data: {
+                labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                datasets: [{
+                    label: "Users",
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: ["#8416fe", "#3a3afb", "#8416fe", "#3a3afb", "#8416fe", "#3a3afb", "#8416fe", "#3a3afb", "#3a3afb", "#8416fe"]
+                }]
+            },
+            options: {
+                legend: { display: false },
+                animation: { easing: "easeInOutBack" },
+                scales: {
+                    yAxes: [{ display: !1, ticks: { fontColor: "#cccccc", beginAtZero: !0, padding: 0 }, gridLines: { zeroLineColor: "transparent" } }],
+                    xAxes: [{ display: !1, gridLines: { zeroLineColor: "transparent", display: !1 }, ticks: { beginAtZero: !0, padding: 0, fontColor: "#cccccc" } }]
+                }
+            }
+        });
     },
     get_account_data: async function () {
         var response = await fetch("/get-total-accounts");
@@ -14,78 +30,25 @@ var registered_users = {
     },
     get_day_idx: function (timestamp) {
         var date = new Date(timestamp * 1000);
-        return date.getUTCDay() - 1;
-    }
-}
+        return date.getUTCDay();
+    },
+    assign_data: function (idx) {
+        var current_reg_users = this.chart.data.datasets[0].data[idx];
+        current_reg_users++;
+        this.chart.data.datasets[0].data[idx] = current_reg_users;
+        this.chart.update();
+    },
+    load: async function () {
+        this.init();
+        var account_data = await this.get_account_data();
 
-async function update_registered_users_chart() {
-    var account_data = await registered_users.get_account_data();
-
-    for (var i = 0; i < account_data.length; i++) {
-        var idx = registered_users.get_day_idx(account_data[i]);
-        registered_users.update_data(registered_users.chart, idx);
-    }
-};
-update_registered_users_chart();
-
-if ($('#coin_sales4').length) {
-    registered_users.chart = new Chart(registered_users.ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            datasets: [{
-                label: "Users",
-                data: [0, 0, 0, 0, 0, 0, 0],
-                backgroundColor: [
-                    '#8416fe',
-                    '#3a3afb',
-                    '#8416fe',
-                    '#3a3afb',
-                    '#8416fe',
-                    '#3a3afb',
-                    '#8416fe',
-                    '#3a3afb',
-                    '#3a3afb',
-                    '#8416fe'
-                ]
-            }]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            animation: {
-                easing: "easeInOutBack"
-            },
-            scales: {
-                yAxes: [{
-                    display: !1,
-                    ticks: {
-                        fontColor: "#cccccc",
-                        beginAtZero: !0,
-                        padding: 0
-                    },
-                    gridLines: {
-                        zeroLineColor: "transparent"
-                    }
-                }],
-                xAxes: [{
-                    display: !1,
-                    gridLines: {
-                        zeroLineColor: "transparent",
-                        display: !1
-                    },
-                    ticks: {
-                        beginAtZero: !0,
-                        padding: 0,
-                        fontColor: "#cccccc"
-                    }
-                }]
-            }
+        console.log(this.day_offset);
+        for (var i = 0; i < account_data.length; i++) {
+            var idx = this.get_day_idx(account_data[i]);
+            this.assign_data(idx);
         }
-    });
+    }
 }
-
 
 /*--------------  coin_sales5 bar chart start ------------*/
 if ($('#coin_sales5').length) {
@@ -832,3 +795,8 @@ if ($('#socialads').length) {
     });
 }
 /*--------------  bar chart 14 highchart END ------------*/
+
+
+window.onload = (event) => {
+    registered_users.load();
+};
