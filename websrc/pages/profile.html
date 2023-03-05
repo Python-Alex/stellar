@@ -211,34 +211,34 @@
 
             <div class="col-8 mx-auto">
                 <div class="card mt-4">
-                    {% if status == 0 %}
-                        <div class="alert alert-success" role="alert">
-                            <strong>Success</strong> Account Details Edited
-                        </div>
-                        <meta http-equiv="refresh" content="2; url=/profile" />
-                    {% endif %}
-                    {% if status == 1 %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Failed</strong> Username must be 6 characters or more
-                        </div>
-                    {% endif %}
-                    {% if status == 2 %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Failed</strong> Invalid Email
-                        </div>
-                    {% endif %}
-                    {% if status == 3 %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Failed</strong> Incorrect Password
-                        </div>
-                    {% endif %}
-                    {% if uploaded == 1 %}
-                        <div class="alert alert-success" role="alert">
-                            <strong>Success</strong> Profile Picture Updated
-                        </div>
-                        <meta http-equiv="refresh" content="2; url=/profile" />
-                    {% endif %}
                     <div class="card-body">
+                        {% if status == 0 %}
+                            <div class="alert alert-success" role="alert">
+                                <strong>Success</strong> Account Details Edited
+                            </div>
+                            <meta http-equiv="refresh" content="2; url=/profile" />
+                        {% endif %}
+                        {% if status == 1 %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Failed</strong> Username must be 6 characters or more
+                            </div>
+                        {% endif %}
+                        {% if status == 2 %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Failed</strong> Invalid Email
+                            </div>
+                        {% endif %}
+                        {% if status == 3 %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Failed</strong> Incorrect Password
+                            </div>
+                        {% endif %}
+                        {% if uploaded == 1 and status != 3 %}
+                            <div class="alert alert-success" role="alert">
+                                <strong>Success</strong> Profile Picture Updated
+                            </div>
+                            <meta http-equiv="refresh" content="2; url=/profile" />
+                        {% endif %}
                         <h4 class="header-title">Edit Details</h4>
                         <form class="needs-validation" novalidate="" enctype = "multipart/form-data" action="/edit-profile" method="POST">
                             <div class="form-row">

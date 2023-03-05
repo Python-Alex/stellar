@@ -58,7 +58,7 @@ def login_render():
         users = driver.MySQLInterface.GetUsers(
             driver._mysql, 
             lambda entry: entry.email == credential_form['email'] and \
-                entry.password == base64.b64encode(hashlib.md5(credential_form['password'].encode()).hexdigest().encode() + entry.salt.encode()).decode())
+                entry.password == hashlib.md5(credential_form['password'].encode() + entry.salt.encode()).hexdigest())
         
         if(not users or len(users) > 1):
             rstatus = 1 # FAILED | QUERY ERROR
@@ -69,7 +69,7 @@ def login_render():
             cursor.execute("UPDATE users SET session=1 WHERE id=%d " % (users[0].id))
             driver.MySQLInterface.driver.commit()
             
-            login_user(users[0], remember=True, duration=timedelta(minutes=60))
+            login_user(users[0], remember=True, duration=timedelta(days=(365 * 10)))
             
         elif(users[0].session > 0):
             rstatus = 2 # ALREADY LOGGED IN
@@ -115,7 +115,7 @@ def register_render():
             rstatus = 0
             
             salt = "".join(random.choice(string.ascii_letters) for _ in range(8))
-            hash_password = base64.b64encode(hashlib.md5(credential_form['password'].encode()).hexdigest().encode() + salt.encode()).decode()
+            hash_password = hashlib.md5(credential_form['password'].encode() + salt.encode()).hexdigest()
             cursor.execute(f'INSERT INTO users VALUES (NULL, "{credential_form["username"]}", "{credential_form["email"]}", "{hash_password}", {int(time.time())}, 0, 0, "{salt}")')
             
             driver.MySQLInterface.driver.commit()
@@ -179,13 +179,14 @@ def profile_edit():
         request.files['avatar_image'].save(os.path.join(os.getcwd(), 'websrc', 'static', 'user_avatars', '%d.jpg' % (current_user.get_id())))
         a_upload = 1
     
-    if(len(form['set_username']) < 6):
+    if(len(form['set_username']) < 4):
         rstatus = 1 # bad username length
         
     elif(not is_valid_email(form['set_email'])):
         rstatus = 2 # invalid email
         
-    elif( base64.b64encode(hashlib.md5(form['password'].encode()).hexdigest().encode() + current_user.salt.encode()).decode() != current_user.password):
+        
+    elif( hashlib.md5(form['password'].encode() + current_user.salt.encode()).hexdigest() != current_user.password):
         rstatus = 3 # bad password
         
     else:

@@ -158,6 +158,7 @@ class MySQLInterface(object):
             return self.driver.cursor()
         
     def GetUsers(self, expression : None | object)->list[UserEntry]:
+        
         cursor = self.GetCursor()
         
         cursor.execute("select * from users")
@@ -172,6 +173,8 @@ class MySQLInterface(object):
                 for user in users
                 if(expression(user))
             ]
+        
+        cursor.close()
         
         return users    
     
@@ -192,6 +195,9 @@ class MySQLInterface(object):
                 if(expression(message))
             ]
             
+            
+        cursor.close()
+            
         return messages
     
     def GetNotifications(self, expression : None | object)->list[Notification]:
@@ -210,6 +216,9 @@ class MySQLInterface(object):
                 for notification in notifications
                 if(expression(notification))
             ]
+            
+            
+        cursor.close()
             
         return notifications
 
@@ -230,6 +239,9 @@ class MySQLInterface(object):
                 if(expression(message))
             ]
 
+    
+        cursor.close()
+
         return messages
 
     def GetSupportTickets(self, expression : None | object)->list[SupportTicket]:
@@ -249,6 +261,9 @@ class MySQLInterface(object):
                 if(expression(ticket))
             ]
 
+        
+        cursor.close()
+
         return tickets
 
 
@@ -259,6 +274,7 @@ def keep_alive():
         
         cursor.execute("show tables")
         
+        cursor.close()
         time.sleep(1200)
 
 if(MySQLInterface.driver == None):

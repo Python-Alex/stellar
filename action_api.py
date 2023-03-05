@@ -10,13 +10,8 @@ from authorization import driver, active
 @login_required
 def send_ticket_request():
     form = flask.request.form.to_dict()
-    print(form)
     
     rstatus = -1
-    
-    # subject
-    # body
-    # priority
     
     userid = current_user._get_current_object().get_id()
     users = driver.MySQLInterface.GetUsers(driver._mysql, 
@@ -45,5 +40,32 @@ def send_ticket_request():
         cursor = driver.MySQLInterface.GetCursor(driver._mysql)
         cursor.execute('INSERT INTO tickets VALUES (NULL, %d, "%s", "%s", "%s", "%s", %d, %d)' % (userid, username, form['header'], form['body'], "", priority, int(time.time())))
         driver.MySQLInterface.driver.commit()
+        
+        cursor.close()
     
     return flask.render_template("supporttickets.html", **{"status": rstatus})
+
+@shared.web_application.route("/send-chat-message", methods=["POST"])
+@login_required
+def send_chat_message():
+    form = flask.request.form.to_dict()
+    
+    userid = form['userid']
+    message = form['content']
+    
+    users = driver.MySQLInterface.GetUsers(driver._mysql, 
+            lambda user: user.id == userid)
+    
+    if(len(users) == 0):
+        return json.dumps({"error": "no user found"})
+    
+    user = users[0]
+    
+    cursor = driver.MySQLInterface.GetCursor(driver._mysql)
+    
+    cursor.execute('INSERT INTO chatlounge VALUES (NULL, %d, "%s", "%s", %d)' % (userid, user.name, message, int(time.time())))
+    driver.MySQLInterface.driver.commit()
+    
+    cursor.close()
+    
+    return json.dumps({"error": 0})
