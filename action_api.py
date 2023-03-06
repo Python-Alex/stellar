@@ -49,7 +49,7 @@ def send_ticket_request():
 @login_required
 def send_chat_message():
     form = json.loads(flask.request.data.decode())
-    print(form)
+
     userid = form['userid']
     message = form['content']
     

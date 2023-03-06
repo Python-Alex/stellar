@@ -4,26 +4,21 @@ from authorization import driver
 
 class ActiveUserStack(object):
     
-    users : list[tuple[float, driver.UserEntry]] # [ (timeout_timestamp, user_entry) , ]
+    users : dict[str, dict]
     
     def __init__(self):
         self.users = []
-        
-    def new_active(self, user: driver.UserEntry):
-        if(user in self.users):
-            return
-        
-        self.users.append((time.time(), user))
-        
-    def check_timeout(self):
-        cursor = driver.MySQLInterface.GetCursor(driver._mysql)
-        
-        for user in self.users.copy(): # cannot mutate list mid-iteration
-            if(time.time() - user[0] > 60):
-                cursor.execute("UPDATE users SET session=0 WHERE id=%d" % (user[1].id))
-                driver.MySQLInterface.driver.commit()
+
+    def new_connection(self, address: str):
+        self.users["address"] = {
+            "ip": address, "info": {
+                "requests": 0, "rtimes": []
+            }}
                 
-                self.users.remove(user)
+    def request_callback(self, address: str):
+        self.users["address"]["info"]["requests"]+=1
+        self.users["address"]["info"]["rtimes"].append(time.time())
+        
                 
 def reset_data():
     cursor = driver.MySQLInterface.GetCursor(driver._mysql)

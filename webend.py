@@ -21,7 +21,6 @@ application = flask.Flask(
     static_folder=os.path.join(web_source_path, 'static')
 )
 application.secret_key = "123123123" #"".join(random.choice(string.ascii_letters + string.digits) for _ in range(32))
-print("SECRET KEY", application.secret_key)
 
 login_manager = LoginManager()
 login_manager.init_app(application)
