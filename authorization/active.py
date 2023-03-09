@@ -1,5 +1,8 @@
 #type: ignore
 import time
+import flask
+import shared
+from flask_login import logout_user
 from authorization import driver
 
 class ActiveUserStack(object):
@@ -10,14 +13,14 @@ class ActiveUserStack(object):
         self.users = []
 
     def new_connection(self, address: str):
-        self.users["address"] = {
+        self.users[address] = {
             "ip": address, "info": {
-                "requests": 0, "rtimes": []
+                "requests": 0, "rtimes": [], "userobject": None
             }}
                 
     def request_callback(self, address: str):
-        self.users["address"]["info"]["requests"]+=1
-        self.users["address"]["info"]["rtimes"].append(time.time())
+        self.users[address]["info"]["requests"]+=1
+        self.users[address]["info"]["rtimes"].append(time.time())
         
                 
 def reset_data():

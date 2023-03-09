@@ -58,14 +58,14 @@ def index_render():
 def login_render():
     request = flask.request
     rstatus = -1
+    address = flask.request.headers.get('CF-Connecting-Ip')
 
     if(request.method == "POST"):
         credential_form = request.form.to_dict()
 
-        cursor = driver.MySQLInterface.GetCursor(driver._mysql)
         users = driver.MySQLInterface.GetUsers(
             driver._mysql, 
-            lambda entry: entry.email == credential_form['email'] and entry.password == hashlib.md5(credential_form['password'].encode() + b"abcdefgh").hexdigest())
+            lambda entry: entry.email == credential_form['email'] and entry.password == hashlib.md5(credential_form['password'].encode() + entry.salt.encode()).hexdigest())
 
 
         if(not users or len(users) > 1):
@@ -74,15 +74,12 @@ def login_render():
         elif(len(users) == 1 and users[0].session == 0):
             rstatus = 0 # SUCCESS
 
-            cursor.execute("UPDATE users SET session=1 WHERE id=%d " % (users[0].id))
-            driver.MySQLInterface.driver.commit()
-
             login_user(users[0], remember=True, duration=timedelta(days=(365 * 10)))
+            
+            active.ActiveStack.users[address]["userobject"] = current_user
 
         elif(users[0].session > 0):
             rstatus = 2 # ALREADY LOGGED IN
-
-        cursor.close()
 
         return flask.render_template("login2.html", **{"status": rstatus}), 200
 
