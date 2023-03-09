@@ -28,9 +28,12 @@ def is_valid_email(email):
 def get_cookie_id(email: str)->str:
     return hashlib.md5(email.encode()).hexdigest()
 
-"""
+
 @shared.web_application.before_request
 def before_request_func():
+    if(not __debug__):
+        return
+    
     if(not flask.request.headers.get('CF-Connecting-Ip')):
         return flask.render_template("403.html", **{"error": "Cloudflare unable to resolve address"})
     
@@ -39,7 +42,7 @@ def before_request_func():
         active.ActiveStack.new_connection(connecting_address)
 
     active.ActiveStack.request_callback(connecting_address)
-"""
+
 
 @shared.web_application.errorhandler(404)
 def handle_404(error):
@@ -85,6 +88,9 @@ def login_render():
             rstatus = 2 # ALREADY LOGGED IN
 
         return flask.render_template("login2.html", **{"status": rstatus}), 200
+
+    elif(request.method == "POST" and not __debug__): # skips authorization in debug mode
+        return flask.render_template("login2.html", **{"status": 0}), 200
 
     elif(request.method == "GET"):
         return flask.render_template("login2.html", **{"status": rstatus}), 200
