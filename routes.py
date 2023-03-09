@@ -28,6 +28,7 @@ def is_valid_email(email):
 def get_cookie_id(email: str)->str:
     return hashlib.md5(email.encode()).hexdigest()
 
+"""
 @shared.web_application.before_request
 def before_request_func():
     if(not flask.request.headers.get('CF-Connecting-Ip')):
@@ -38,6 +39,7 @@ def before_request_func():
         active.ActiveStack.new_connection(connecting_address)
 
     active.ActiveStack.request_callback(connecting_address)
+"""
 
 @shared.web_application.errorhandler(404)
 def handle_404(error):
@@ -76,7 +78,8 @@ def login_render():
 
             login_user(users[0], remember=True, duration=timedelta(days=(365 * 10)))
             
-            active.ActiveStack.users[address]["userobject"] = current_user
+            if(address):
+                active.ActiveStack.users[address]["userobject"] = current_user
 
         elif(users[0].session > 0):
             rstatus = 2 # ALREADY LOGGED IN

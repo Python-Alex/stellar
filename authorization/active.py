@@ -10,7 +10,7 @@ class ActiveUserStack(object):
     users : dict[str, dict]
     
     def __init__(self):
-        self.users = []
+        self.users = {}
 
     def new_connection(self, address: str):
         self.users[address] = {
